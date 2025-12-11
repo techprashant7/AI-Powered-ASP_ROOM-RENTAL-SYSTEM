@@ -84,7 +84,20 @@ def api_create_booking(request):
     
     room_id = request.data.get('room_id')
     start_date_str = request.data.get('start_date')
-    months = int(request.data.get('months', 1))
+    months_str = request.data.get('months', 1)
+    
+    if not room_id:
+        return Response({'error': 'Room ID is required'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    if not start_date_str:
+        return Response({'error': 'Start date is required'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        months = int(months_str)
+        if months < 1 or months > 24:
+            return Response({'error': 'Months must be between 1 and 24'}, status=status.HTTP_400_BAD_REQUEST)
+    except (ValueError, TypeError):
+        return Response({'error': 'Invalid months value'}, status=status.HTTP_400_BAD_REQUEST)
     
     try:
         room = Room.objects.get(id=room_id)
@@ -94,7 +107,11 @@ def api_create_booking(request):
     if room.owner == request.user:
         return Response({'error': 'You cannot book your own room'}, status=status.HTTP_400_BAD_REQUEST)
     
-    start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+    try:
+        start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+    except ValueError:
+        return Response({'error': 'Invalid date format. Use YYYY-MM-DD'}, status=status.HTTP_400_BAD_REQUEST)
+    
     end_date = start_date + relativedelta(months=months)
     total_rent = float(room.price) * months
     
