@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block title %}My Bookings - RoomBook{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4"><i class="bi bi-calendar-check"></i> My Bookings</h1>
+    <div id="bookings-container">
+        <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+async function loadBookings() {
+    try {
+        const res = await fetch('/api/bookings/my/');
+        if (!res.ok) {
+            if (res.status === 401) {
+                window.location.href = '/login/';
+                return;
+            }
+            throw new Error('Failed to load bookings');
+        }
+        
+        const bookings = await res.json();
+        const container = document.getElementById('bookings-container');
+        
+        if (bookings.length === 0) {
+            container.innerHTML = `
+                <div class="text-center py-5">
+                    <i class="bi bi-inbox display-1 text-muted"></i>
+                    <p class="text-muted mt-3">No bookings yet</p>
+                    <a href="/rooms/" class="btn btn-primary">Browse Rooms</a>
+                </div>
+            `;
+            return;
+        }
+        
+        container.innerHTML = `
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Room</th>
+                            <th>Location</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Months</th>
+                            <th>Total Rent</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${bookings.map(b => `
+                            <tr>
+                                <td><a href="/rooms/${b.room}/">${b.room_title}</a></td>
+                                <td>${b.room_location}</td>
+                                <td>${b.start_date}</td>
+                                <td>${b.end_date}</td>
+                                <td>${b.months}</td>
+                                <td>$${parseFloat(b.total_rent).toFixed(2)}</td>
+                                <td><span class="badge badge-${b.status}">${b.status.charAt(0).toUpperCase() + b.status.slice(1)}</span></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </div>
+        `;
+    } catch (e) {
+        console.error(e);
+        document.getElementById('bookings-container').innerHTML = '<div class="alert alert-danger">Error loading bookings</div>';
+    }
+}
+loadBookings();
+</script>
+{% endblock %}

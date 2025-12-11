@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Browse Rooms - RoomBook{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4"><i class="bi bi-grid-3x3-gap"></i> Available Rooms</h1>
+    <div class="row g-4" id="rooms-container">
+        <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+async function loadRooms() {
+    try {
+        const res = await fetch('/api/rooms/');
+        const rooms = await res.json();
+        const container = document.getElementById('rooms-container');
+        
+        if (rooms.length === 0) {
+            container.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted">No rooms available yet</p></div>';
+            return;
+        }
+        
+        container.innerHTML = rooms.map(room => `
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100">
+                    <img src="${room.image_url || 'https://via.placeholder.com/400x200?text=No+Image'}" class="card-img-top room-image" alt="${room.title}">
+                    <div class="card-body">
+                        <h5 class="card-title">${room.title}</h5>
+                        <p class="text-muted"><i class="bi bi-geo-alt"></i> ${room.location}</p>
+                        <p class="card-text text-truncate">${room.description}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="h5 text-primary mb-0">$${parseFloat(room.price).toFixed(2)}/month</span>
+                            <a href="/rooms/${room.id}/" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    } catch (e) {
+        console.error(e);
+        document.getElementById('rooms-container').innerHTML = '<div class="col-12 text-center py-5"><p class="text-danger">Error loading rooms</p></div>';
+    }
+}
+loadRooms();
+</script>
+{% endblock %}

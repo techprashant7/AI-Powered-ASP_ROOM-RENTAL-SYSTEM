@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}RoomBook - Find Your Perfect Room{% endblock %}
+
+{% block content %}
+<section class="hero text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-3"><i class="bi bi-house-heart-fill"></i> Find Your Perfect Room</h1>
+        <p class="lead mb-4">Browse available rooms, connect with owners, and book your ideal living space</p>
+        <a href="/rooms/" class="btn btn-light btn-lg px-5"><i class="bi bi-search"></i> Browse Rooms</a>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">How It Works</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 text-center p-4">
+                    <i class="bi bi-search display-3 text-primary mb-3"></i>
+                    <h4>1. Browse Rooms</h4>
+                    <p class="text-muted">Explore available rooms with detailed information, images, and pricing</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 text-center p-4">
+                    <i class="bi bi-calendar-plus display-3 text-primary mb-3"></i>
+                    <h4>2. Book Online</h4>
+                    <p class="text-muted">Select your dates, duration, and submit a booking request</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 text-center p-4">
+                    <i class="bi bi-check-circle display-3 text-primary mb-3"></i>
+                    <h4>3. Get Approved</h4>
+                    <p class="text-muted">Wait for owner approval and move into your new room</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
