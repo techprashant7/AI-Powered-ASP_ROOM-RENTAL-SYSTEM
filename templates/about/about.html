@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% block title %}About Us - ASP Room Rental Providers{% endblock %}
+
+{% block extra_css %}
+<style>
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 80px 0;
+}
+.team-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.team-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+.stat-box {
+    background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">About ASP Room Rental Providers</h1>
+                <p class="lead mb-4">Leading the way in premium room rental solutions since 2020</p>
+                <p>At ASP, we're revolutionizing the room rental experience by connecting quality tenants with verified property owners through our innovative platform.</p>
+            </div>
+            <div class="col-lg-6">
+                <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="ASP Office" class="img-fluid rounded-3 shadow-lg">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-md-3">
+                <div class="stat-box">
+                    <h2 class="display-4 fw-bold">5000+</h2>
+                    <p>Happy Tenants</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-box">
+                    <h2 class="display-4 fw-bold">1000+</h2>
+                    <p>Verified Properties</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-box">
+                    <h2 class="display-4 fw-bold">50+</h2>
+                    <p>Cities Covered</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-box">
+                    <h2 class="display-4 fw-bold">4.8★</h2>
+                    <p>Average Rating</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Our Mission</h2>
+                <p class="lead">To provide safe, affordable, and quality housing solutions for everyone through technology-driven innovation.</p>
+                <p>ASP Room Rental Providers was founded with a simple mission: to make room rentals transparent, secure, and accessible for both property owners and tenants. We believe everyone deserves a safe and comfortable place to call home.</p>
+            </div>
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Our Vision</h2>
+                <p class="lead">To become the most trusted room rental platform across the nation.</p>
+                <p>We envision a future where finding the perfect room is as easy as a few clicks, where property owners can manage their listings efficiently, and where every rental transaction is secure and transparent.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center fw-bold mb-5">Our Leadership Team</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="team-card card h-100">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" class="card-img-top" alt="CEO">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Alex Thompson</h5>
+                        <p class="text-muted">CEO & Founder</p>
+                        <p class="card-text">Visionary leader with 15+ years in real estate and technology.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="team-card card h-100">
+                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" class="card-img-top" alt="CTO">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Sarah Chen</h5>
+                        <p class="text-muted">CTO</p>
+                        <p class="card-text">Tech expert driving innovation in rental platform solutions.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="team-card card h-100">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" class="card-img-top" alt="COO">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Michael Roberts</h5>
+                        <p class="text-muted">COO</p>
+                        <p class="card-text">Operations expert ensuring seamless service delivery.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

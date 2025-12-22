@@ -1,0 +1,307 @@
+{% extends 'base.html' %}
+{% block title %}Agreement Generator - RoomBook{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="mb-2">
+                        <i class="bi bi-file-earmark-text me-3 text-primary"></i>
+                        Rental Agreement Generator
+                    </h1>
+                    <p class="text-muted mb-0">Create professional rental agreements instantly with AI</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if booking %}
+    <!-- Existing Booking Agreement -->
+    <div class="row mb-4">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-calendar-check me-2"></i>
+                        Generate Agreement for Booking
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Room:</strong> {{ booking.room.title }}</p>
+                            <p><strong>Location:</strong> {{ booking.room.location }}</p>
+                            <p><strong>Price:</strong> ${{ booking.room.price }}/month</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Start Date:</strong> {{ booking.start_date }}</p>
+                            <p><strong>End Date:</strong> {{ booking.end_date }}</p>
+                            <p><strong>Total Rent:</strong> ${{ booking.total_rent }}</p>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4">
+                        <button class="btn btn-success btn-lg" onclick="generateAgreementForBooking()">
+                            <i class="bi bi-file-earmark-pdf me-2"></i>
+                            Generate Agreement PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Custom Agreement Generator -->
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-pencil-square me-2"></i>
+                        Create Custom Agreement
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form id="agreementForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="ownerName" class="form-label">Owner Name *</label>
+                                <input type="text" class="form-control" id="ownerName" name="owner_name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="tenantName" class="form-label">Tenant Name *</label>
+                                <input type="text" class="form-control" id="tenantName" name="tenant_name" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="propertyAddress" class="form-label">Property Address *</label>
+                            <textarea class="form-control" id="propertyAddress" name="property_address" rows="3" required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="propertyDescription" class="form-label">Property Description</label>
+                            <textarea class="form-control" id="propertyDescription" name="property_description" rows="3" placeholder="Describe the property, amenities, and features..."></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="rentAmount" class="form-label">Monthly Rent ($) *</label>
+                                <input type="number" class="form-control" id="rentAmount" name="rent_amount" min="0" step="0.01" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="durationMonths" class="form-label">Duration (Months) *</label>
+                                <input type="number" class="form-control" id="durationMonths" name="duration_months" min="1" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="paymentDueDate" class="form-label">Payment Due Date</label>
+                                <select class="form-control" id="paymentDueDate" name="payment_due_date">
+                                    <option value="First day of each month">1st of month</option>
+                                    <option value="15th of each month">15th of month</option>
+                                    <option value="Last day of each month">Last day of month</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="securityDeposit" class="form-label">Security Deposit</label>
+                                <input type="text" class="form-control" id="securityDeposit" name="security_deposit" placeholder="e.g., One month's rent">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="startDate" class="form-label">Start Date</label>
+                                <input type="date" class="form-control" id="startDate" name="start_date">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="additionalTerms" class="form-label">Additional Terms</label>
+                            <textarea class="form-control" id="additionalTerms" name="additional_terms" rows="4" placeholder="Any additional terms or conditions..."></textarea>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-file-earmark-pdf me-2"></i>
+                                Generate Agreement PDF
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Features Card -->
+            <div class="card mt-4 shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-title">
+                        <i class="bi bi-shield-check me-2 text-success"></i>
+                        Agreement Features
+                    </h6>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex">
+                                <i class="bi bi-check-circle text-success me-2 mt-1"></i>
+                                <div>
+                                    <strong>Professional Format</strong>
+                                    <p class="text-muted small mb-0">Legally structured rental agreements</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex">
+                                <i class="bi bi-check-circle text-success me-2 mt-1"></i>
+                                <div>
+                                    <strong>PDF Export</strong>
+                                    <p class="text-muted small mb-0">Download ready-to-print PDF documents</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex">
+                                <i class="bi bi-check-circle text-success me-2 mt-1"></i>
+                                <div>
+                                    <strong>Customizable Terms</strong>
+                                    <p class="text-muted small mb-0">Tailor agreements to your specific needs</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="d-flex">
+                                <i class="bi bi-check-circle text-success me-2 mt-1"></i>
+                                <div>
+                                    <strong>AI-Powered</strong>
+                                    <p class="text-muted small mb-0">Smart generation based on your inputs</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.form-label {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
+}
+
+.card-header {
+    border-bottom: none;
+}
+
+.btn-lg {
+    padding: 12px 30px;
+    font-weight: 600;
+    border-radius: 25px;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+{% if booking %}
+function generateAgreementForBooking() {
+    const btn = event.target;
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Generating...';
+    btn.disabled = true;
+    
+    fetch('/api/generate-agreement/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({
+            booking_id: {{ booking.id }}
+        })
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.blob();
+        } else {
+            throw new Error('Failed to generate agreement');
+        }
+    })
+    .then(blob => {
+        // Download the PDF
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'rental_agreement.pdf';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+        
+        showToast('Agreement generated successfully!', 'success');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('Failed to generate agreement', 'error');
+    })
+    .finally(() => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    });
+}
+{% endif %}
+
+document.getElementById('agreementForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const btn = e.target.querySelector('button[type="submit"]');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Generating...';
+    btn.disabled = true;
+    
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+    
+    fetch('/api/generate-agreement/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.blob();
+        } else {
+            return response.json().then(err => { throw new Error(err.error || 'Failed to generate agreement'); });
+        }
+    })
+    .then(blob => {
+        // Download the PDF
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'rental_agreement.pdf';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+        
+        showToast('Agreement generated successfully!', 'success');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast(error.message || 'Failed to generate agreement', 'error');
+    })
+    .finally(() => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    });
+});
+</script>
+{% endblock %}

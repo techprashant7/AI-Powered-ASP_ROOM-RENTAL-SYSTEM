@@ -12,14 +12,15 @@
     </div>
 </div>
 
-<div class="modal fade" id="bookingModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title"><i class="bi bi-calendar-plus"></i> Book This Room</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+<!-- Custom Booking Modal (replacing Bootstrap modal) -->
+<div class="modal" id="bookingModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999;">
+    <div class="modal-dialog" style="position: relative; margin: 50px auto; max-width: 500px;">
+        <div class="modal-content" style="background: white; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+            <div class="modal-header" style="padding: 15px; border-bottom: 1px solid #dee2e6; display: flex; justify-content: space-between; align-items: center;">
+                <h5 class="modal-title" style="margin: 0;"><i class="bi bi-calendar-plus"></i> Book This Room</h5>
+                <button type="button" class="btn-close" onclick="closeBookingModal()" style="background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="padding: 15px;">
                 <form id="booking-form">
                     <div class="mb-3">
                         <label class="form-label">Start Date</label>
@@ -44,9 +45,11 @@
                     <div id="booking-error" class="alert alert-danger d-none"></div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick="submitBooking()">Submit Booking</button>
+            <div class="modal-footer" style="padding: 15px; border-top: 1px solid #dee2e6; display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn btn-secondary" onclick="closeBookingModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" id="submit-booking-btn">
+                    <i class="bi bi-send me-2"></i>Submit Booking
+                </button>
             </div>
         </div>
     </div>
@@ -54,8 +57,40 @@
 {% endblock %}
 
 {% block extra_js %}
+<style>
+/* Fix modal backdrop z-index issues */
+.modal-backdrop {
+    z-index: 1040 !important;
+}
+
+.modal {
+    z-index: 1050 !important;
+}
+
+/* Ensure modal content is above backdrop */
+.modal-content {
+    z-index: 1060 !important;
+    position: relative;
+}
+
+/* Fix form input focus issues */
+.modal input,
+.modal select,
+.modal textarea,
+.modal button {
+    position: relative;
+    z-index: 1070 !important;
+}
+
+/* Remove backdrop overlay that blocks clicks */
+.modal-backdrop.show {
+    opacity: 0.5 !important;
+}
+</style>
+
 <script>
-const roomId = {{ room_id }};
+// Django template variables
+const roomId = parseInt('{{ room_id|default:1 }}');
 let roomData = null;
 
 async function loadRoom() {
@@ -105,12 +140,42 @@ async function loadRoom() {
 }
 
 function openBookingModal() {
-    const modal = new bootstrap.Modal(document.getElementById('bookingModal'));
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('start_date').min = today;
-    document.getElementById('start_date').value = today;
-    updateCalculations();
-    modal.show();
+    try {
+        const modalElement = document.getElementById('bookingModal');
+        if (!modalElement) {
+            console.error('Modal element not found');
+            showToast('Error: Modal not found', 'error');
+            return;
+        }
+        
+        // Show the modal
+        modalElement.style.display = 'block';
+        
+        const today = new Date().toISOString().split('T')[0];
+        
+        const startDateInput = document.getElementById('start_date');
+        if (startDateInput) {
+            startDateInput.min = today;
+            startDateInput.value = today;
+        }
+        
+        updateCalculations();
+        
+    } catch (error) {
+        console.error('Error opening booking modal:', error);
+        showToast('Error opening booking modal', 'error');
+    }
+}
+
+function closeBookingModal() {
+    try {
+        const modalElement = document.getElementById('bookingModal');
+        if (modalElement) {
+            modalElement.style.display = 'none';
+        }
+    } catch (error) {
+        console.error('Error closing booking modal:', error);
+    }
 }
 
 function updateCalculations() {
@@ -130,13 +195,27 @@ function updateCalculations() {
 
 document.getElementById('start_date')?.addEventListener('change', updateCalculations);
 document.getElementById('months')?.addEventListener('input', updateCalculations);
+document.getElementById('submit-booking-btn')?.addEventListener('click', submitBooking);
 
 async function submitBooking() {
     const errorDiv = document.getElementById('booking-error');
+    const submitBtn = document.getElementById('submit-booking-btn');
     errorDiv.classList.add('d-none');
+    
+    // Disable button and show loading state
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Submitting...';
     
     const startDate = document.getElementById('start_date').value;
     const months = document.getElementById('months').value;
+    
+    if (!startDate || !months) {
+        errorDiv.textContent = 'Please fill in all required fields';
+        errorDiv.classList.remove('d-none');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="bi bi-send me-2"></i>Submit Booking';
+        return;
+    }
     
     try {
         const res = await fetch('/api/bookings/add/', {
@@ -156,34 +235,35 @@ async function submitBooking() {
         
         if (!res.ok) {
             if (res.status === 401) {
-                window.location.href = '/login/?next=' + encodeURIComponent(window.location.pathname);
+                showToast('Please login to make a booking', 'warning');
+                closeBookingModal(); 
+                setTimeout(() => {
+                    window.location.href = '/login/?next=' + encodeURIComponent(window.location.pathname);
+                }, 1500);
                 return;
             }
-            throw new Error(data.error || 'Booking failed');
+            throw new Error(data.error || 'Failed to submit booking');
         }
         
-        bootstrap.Modal.getInstance(document.getElementById('bookingModal')).hide();
-        alert('Booking submitted successfully! The owner will review your request.');
-        window.location.href = '/my-bookings/';
+        // Success
+        showToast('Booking submitted successfully!', 'success');
+        closeBookingModal(); 
+        
+        // Reset form
+        document.getElementById('booking-form').reset();
+        
+        // Redirect after delay
+        setTimeout(() => {
+            window.location.href = '/my-bookings/';
+        }, 1500);
+        
     } catch (e) {
-        errorDiv.textContent = e.message;
+        console.error(e);
+        errorDiv.textContent = e.message || 'Failed to submit booking';
         errorDiv.classList.remove('d-none');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="bi bi-send me-2"></i>Submit Booking';
     }
-}
-
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
 }
 
 loadRoom();

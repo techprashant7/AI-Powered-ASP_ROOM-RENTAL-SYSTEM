@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% block title %}Services - ASP Room Rental Providers{% endblock %}
+
+{% block extra_css %}
+<style>
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 80px 0;
+}
+.service-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+.service-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    color: white;
+    font-size: 2rem;
+}
+.pricing-card {
+    transition: transform 0.3s ease;
+    border: 2px solid transparent;
+}
+.pricing-card:hover {
+    transform: scale(1.05);
+    border-color: #667eea;
+}
+.pricing-card.featured {
+    border-color: #667eea;
+    transform: scale(1.05);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">Our Premium Services</h1>
+                <p class="lead mb-4">Comprehensive room rental solutions tailored to your needs</p>
+                <p>ASP Room Rental Providers offers a complete suite of services designed to make your rental experience seamless, secure, and satisfying.</p>
+            </div>
+            <div class="col-lg-6">
+                <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Services" class="img-fluid rounded-3 shadow-lg">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center fw-bold mb-5">What We Offer</h2>
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="service-card card h-100 p-4">
+                    <div class="service-icon">
+                        <i class="bi bi-house-door"></i>
+                    </div>
+                    <h4 class="text-center mb-3">Room Listings</h4>
+                    <p class="text-center">Premium room listings with detailed descriptions, high-quality images, and verified property information.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="service-card card h-100 p-4">
+                    <div class="service-icon">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+                    <h4 class="text-center mb-3">Verified Properties</h4>
+                    <p class="text-center">All properties undergo thorough verification to ensure authenticity and quality standards.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="service-card card h-100 p-4">
+                    <div class="service-icon">
+                        <i class="bi bi-credit-card"></i>
+                    </div>
+                    <h4 class="text-center mb-3">Secure Payments</h4>
+                    <p class="text-center">Safe and secure payment processing with multiple payment options and transaction protection.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="service-card card h-100 p-4">
+                    <div class="service-icon">
+                        <i class="bi bi-headset"></i>
+                    </div>
+                    <h4 class="text-center mb-3">24/7 Support</h4>
+                    <p class="text-center">Round-the-clock customer support to assist with any queries or issues.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="service-card card h-100 p-4">
+                    <div class="service-icon">
+                        <i class="bi bi-file-earmark-text"></i>
+                    </div>
+                    <h4 class="text-center mb-3">Legal Documents</h4>
+                    <p class="text-center">Professional rental agreements and legal documentation templates.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="service-card card h-100 p-4">
+                    <div class="service-icon">
+                        <i class="bi bi-robot"></i>
+                    </div>
+                    <h4 class="text-center mb-3">AI Assistance</h4>
+                    <p class="text-center">AI-powered chatbot and negotiation assistant for instant help and smart recommendations.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center fw-bold mb-5">Service Packages</h2>
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="pricing-card card h-100">
+                    <div class="card-body text-center p-4">
+                        <h5 class="card-title">Basic</h5>
+                        <h3 class="card-title text-primary">Free</h3>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Browse rooms</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Basic search</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Limited listings</li>
+                            <li class="mb-2"><i class="bi bi-x-circle text-muted me-2"></i>Priority support</li>
+                        </ul>
+                        <button class="btn btn-outline-primary">Get Started</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="pricing-card featured card h-100">
+                    <div class="card-body text-center p-4">
+                        <span class="badge bg-primary mb-2">Most Popular</span>
+                        <h5 class="card-title">Premium</h5>
+                        <h3 class="card-title text-primary">$29<span class="text-muted">/month</span></h3>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Unlimited browsing</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Advanced search</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Verified listings</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Priority support</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>AI recommendations</li>
+                        </ul>
+                        <button class="btn btn-primary">Choose Premium</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="pricing-card card h-100">
+                    <div class="card-body text-center p-4">
+                        <h5 class="card-title">Enterprise</h5>
+                        <h3 class="card-title text-primary">$99<span class="text-muted">/month</span></h3>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>All Premium features</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Custom solutions</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Dedicated support</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>API access</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>White labeling</li>
+                        </ul>
+                        <button class="btn btn-outline-primary">Contact Sales</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

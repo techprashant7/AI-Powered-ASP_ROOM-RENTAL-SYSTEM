@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block title %}Profile - RoomBook{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4"><i class="bi bi-person-vcard"></i> Profile</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <form id="profile-form">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="first_name">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="last_name">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Phone</label>
+                        <input type="text" class="form-control" id="phone">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Address</label>
+                    <textarea class="form-control" id="address" rows="3"></textarea>
+                </div>
+
+                <div id="profile-error" class="alert alert-danger d-none"></div>
+                <div id="profile-success" class="alert alert-success d-none"></div>
+
+                <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Update Profile</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function showProfileError(msg) {
+    const el = document.getElementById('profile-error');
+    el.textContent = msg;
+    el.classList.remove('d-none');
+    document.getElementById('profile-success').classList.add('d-none');
+}
+
+function showProfileSuccess(msg) {
+    const el = document.getElementById('profile-success');
+    el.textContent = msg;
+    el.classList.remove('d-none');
+    document.getElementById('profile-error').classList.add('d-none');
+}
+
+async function loadProfile() {
+    try {
+        const res = await fetch('/api/profile/');
+        if (!res.ok) {
+            if (res.status === 401) {
+                window.location.href = '/login/?next=' + encodeURIComponent('/profile/');
+                return;
+            }
+            throw new Error('Failed to load profile');
+        }
+
+        const data = await res.json();
+        document.getElementById('first_name').value = data.user.first_name || '';
+        document.getElementById('last_name').value = data.user.last_name || '';
+        document.getElementById('email').value = data.user.email || '';
+        document.getElementById('phone').value = (data.profile && data.profile.phone) || '';
+        document.getElementById('address').value = (data.profile && data.profile.address) || '';
+    } catch (e) {
+        showProfileError(e.message);
+    }
+}
+
+async function saveProfile(e) {
+    e.preventDefault();
+
+    try {
+        const res = await fetch('/api/profile/', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                user: {
+                    first_name: document.getElementById('first_name').value,
+                    last_name: document.getElementById('last_name').value,
+                    email: document.getElementById('email').value,
+                },
+                profile: {
+                    phone: document.getElementById('phone').value,
+                    address: document.getElementById('address').value,
+                }
+            })
+        });
+
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+            throw new Error(data.error || JSON.stringify(data));
+        }
+
+        showProfileSuccess('Profile updated successfully');
+    } catch (e) {
+        showProfileError(e.message);
+    }
+}
+
+document.getElementById('profile-form').addEventListener('submit', saveProfile);
+loadProfile();
+</script>
+{% endblock %}

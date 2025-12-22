@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+{% block title %}Contact Us - ASP Room Rental Providers{% endblock %}
+
+{% block extra_css %}
+<style>
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 80px 0;
+}
+.contact-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+.contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+.contact-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    color: white;
+    font-size: 1.5rem;
+}
+.form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+.btn-primary {
+    background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+    border: none;
+}
+.btn-primary:hover {
+    background: linear-gradient(45deg, #764ba2 0%, #667eea 100%);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">Contact ASP Room Rental Providers</h1>
+                <p class="lead mb-4">Get in touch with our team for any questions or support</p>
+                <p>We're here to help you find the perfect room or manage your property listings. Reach out to us through any of the channels below.</p>
+            </div>
+            <div class="col-lg-6">
+                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Contact Us" class="img-fluid rounded-3 shadow-lg">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mb-4">
+                <div class="card border-0 shadow-lg">
+                    <div class="card-body p-5">
+                        <h3 class="mb-4">Send us a Message</h3>
+                        <form>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="firstName" class="form-label">First Name</label>
+                                    <input type="text" class="form-control" id="firstName" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="lastName" class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" id="lastName" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" id="email" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="phone" class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" id="phone">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="subject" class="form-label">Subject</label>
+                                <select class="form-control" id="subject" required>
+                                    <option value="">Select a subject</option>
+                                    <option value="general">General Inquiry</option>
+                                    <option value="booking">Booking Support</option>
+                                    <option value="property">Property Listing</option>
+                                    <option value="technical">Technical Support</option>
+                                    <option value="billing">Billing Question</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea class="form-control" id="message" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="contact-card card mb-4">
+                    <div class="card-body text-center p-4">
+                        <div class="contact-icon">
+                            <i class="bi bi-geo-alt"></i>
+                        </div>
+                        <h5 class="card-title">Visit Our Office</h5>
+                        <p class="card-text">123 Business Avenue<br>Suite 100<br>Metropolis, NY 10001<br>United States</p>
+                    </div>
+                </div>
+                <div class="contact-card card mb-4">
+                    <div class="card-body text-center p-4">
+                        <div class="contact-icon">
+                            <i class="bi bi-telephone"></i>
+                        </div>
+                        <h5 class="card-title">Call Us</h5>
+                        <p class="card-text">
+                            <strong>Main:</strong> +1 (555) 123-4567<br>
+                            <strong>Toll Free:</strong> 1-800-ASP-RENT<br>
+                            <strong>Support:</strong> +1 (555) 987-6543
+                        </p>
+                    </div>
+                </div>
+                <div class="contact-card card mb-4">
+                    <div class="card-body text-center p-4">
+                        <div class="contact-icon">
+                            <i class="bi bi-envelope"></i>
+                        </div>
+                        <h5 class="card-title">Email Us</h5>
+                        <p class="card-text">
+                            <strong>General:</strong> info@asp-rentals.com<br>
+                            <strong>Support:</strong> support@asp-rentals.com<br>
+                            <strong>Sales:</strong> sales@asp-rentals.com
+                        </p>
+                    </div>
+                </div>
+                <div class="contact-card card">
+                    <div class="card-body text-center p-4">
+                        <div class="contact-icon">
+                            <i class="bi bi-clock"></i>
+                        </div>
+                        <h5 class="card-title">Business Hours</h5>
+                        <p class="card-text">
+                            <strong>Monday - Friday:</strong> 9:00 AM - 6:00 PM<br>
+                            <strong>Saturday:</strong> 10:00 AM - 4:00 PM<br>
+                            <strong>Sunday:</strong> Closed<br>
+                            <strong>24/7 Emergency Support Available</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center fw-bold mb-5">Frequently Asked Questions</h2>
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">How do I list my property on ASP?</h5>
+                        <p class="card-text">Simply create an account, click "List Property" and follow our easy step-by-step process to add your room details.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Is my payment information secure?</h5>
+                        <p class="card-text">Yes, we use industry-standard encryption and secure payment gateways to protect all transactions.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">What if I need to cancel my booking?</h5>
+                        <p class="card-text">Our cancellation policy varies by property. Check the specific terms before booking, or contact support for assistance.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">How quickly can I expect a response?</h5>
+                        <p class="card-text">We typically respond to inquiries within 24 hours. Premium members receive priority support with faster response times.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
