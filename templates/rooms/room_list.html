@@ -1,0 +1,370 @@
+{% extends 'base.html' %}
+{% block title %}Browse Rooms - RoomBook{% endblock %}
+
+{% block extra_css %}
+<style>
+    .room-card {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .room-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .room-card:hover::before {
+        left: 100%;
+    }
+    
+    .room-card .room-image-container {
+        position: relative;
+        overflow: hidden;
+        height: 250px;
+    }
+    
+    .room-card .room-image {
+        transition: transform 0.5s ease;
+    }
+    
+    .room-card:hover .room-image {
+        transform: scale(1.1);
+    }
+    
+    .room-card .room-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.7) 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        display: flex;
+        align-items: flex-end;
+        padding: 20px;
+    }
+    
+    .room-card:hover .room-overlay {
+        opacity: 1;
+    }
+    
+    .room-card .price-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 8px 15px;
+        border-radius: 25px;
+        font-weight: 600;
+        box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        z-index: 10;
+    }
+    
+    .room-card .room-body {
+        padding: 25px;
+    }
+    
+    .room-card .room-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 10px;
+        line-height: 1.3;
+    }
+    
+    .room-card .room-location {
+        color: #6c757d;
+        font-size: 0.95rem;
+        margin-bottom: 15px;
+    }
+    
+    .room-card .room-description {
+        color: #495057;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .room-card .room-features {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .room-card .feature-tag {
+        background: rgba(67, 97, 238, 0.1);
+        color: var(--primary-color);
+        padding: 5px 12px;
+        border-radius: 15px;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+    
+    .room-card .room-actions {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+    
+    .filter-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        border: none;
+        padding: 30px;
+        margin-bottom: 30px;
+    }
+    
+    .filter-card .form-control, .filter-card .form-select {
+        border-radius: 15px;
+        border: 2px solid #e9ecef;
+        padding: 12px 15px;
+        transition: all 0.3s ease;
+    }
+    
+    .filter-card .form-control:focus, .filter-card .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.15);
+    }
+    
+    .page-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 60px 0;
+        margin: -30px -30px 30px -30px;
+        border-radius: 20px 20px 0 0;
+        text-align: center;
+    }
+    
+    .page-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+    
+    .page-header p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+    }
+    
+    .rooms-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 30px;
+        margin-top: 30px;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .room-card {
+        animation: fadeInUp 0.6s ease-out;
+    }
+    
+    .room-card:nth-child(1) { animation-delay: 0.1s; }
+    .room-card:nth-child(2) { animation-delay: 0.2s; }
+    .room-card:nth-child(3) { animation-delay: 0.3s; }
+    .room-card:nth-child(4) { animation-delay: 0.4s; }
+    .room-card:nth-child(5) { animation-delay: 0.5s; }
+    .room-card:nth-child(6) { animation-delay: 0.6s; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1><i class="bi bi-house-heart-fill me-3"></i>Find Your Perfect Room</h1>
+        <p>Discover amazing rooms from trusted hosts in your area</p>
+    </div>
+</div>
+
+<div class="filter-card">
+    <form id="filters-form">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <label class="form-label fw-semibold"><i class="bi bi-search me-2"></i>Search</label>
+                <input type="text" class="form-control" id="q" placeholder="Keywords...">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-semibold"><i class="bi bi-geo-alt me-2"></i>Location</label>
+                <input type="text" class="form-control" id="location" placeholder="City or area">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label fw-semibold"><i class="bi bi-currency-dollar me-2"></i>Min Price</label>
+                <input type="number" step="0.01" class="form-control" id="min_price" placeholder="0">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label fw-semibold"><i class="bi bi-currency-dollar me-2"></i>Max Price</label>
+                <input type="number" step="0.01" class="form-control" id="max_price" placeholder="2000">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label fw-semibold"><i class="bi bi-sort-down me-2"></i>Sort By</label>
+                <select class="form-select" id="sort">
+                    <option value="newest" selected>Newest First</option>
+                    <option value="price_asc">Price: Low to High</option>
+                    <option value="price_desc">Price: High to Low</option>
+                </select>
+            </div>
+            <div class="col-md-12 d-flex gap-2 mt-3">
+                <button type="submit" class="btn btn-primary px-4">
+                    <i class="bi bi-funnel-fill me-2"></i>Apply Filters
+                </button>
+                <button type="button" class="btn btn-outline-secondary px-4" onclick="resetFilters()">
+                    <i class="bi bi-arrow-clockwise me-2"></i>Reset
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="rooms-grid" id="rooms-container">
+    <div class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading rooms...</span>
+        </div>
+        <p class="mt-3 text-muted">Finding perfect rooms for you...</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function buildRoomsQuery() {
+    const params = new URLSearchParams();
+
+    const q = document.getElementById('q')?.value?.trim();
+    const location = document.getElementById('location')?.value?.trim();
+    const minPrice = document.getElementById('min_price')?.value;
+    const maxPrice = document.getElementById('max_price')?.value;
+    const sort = document.getElementById('sort')?.value;
+
+    if (q) params.set('q', q);
+    if (location) params.set('location', location);
+    if (minPrice) params.set('min_price', minPrice);
+    if (maxPrice) params.set('max_price', maxPrice);
+    if (sort) params.set('sort', sort);
+
+    const query = params.toString();
+    return query ? `?${query}` : '';
+}
+
+function resetFilters() {
+    document.getElementById('q').value = '';
+    document.getElementById('location').value = '';
+    document.getElementById('min_price').value = '';
+    document.getElementById('max_price').value = '';
+    document.getElementById('sort').value = 'newest';
+    loadRooms();
+}
+
+async function loadRooms() {
+    try {
+        const res = await fetch('/api/rooms/' + buildRoomsQuery());
+        const rooms = await res.json();
+        const container = document.getElementById('rooms-container');
+        
+        if (rooms.length === 0) {
+            container.innerHTML = `
+                <div class="col-12 text-center py-5">
+                    <i class="bi bi-house-slash display-1 text-muted mb-3"></i>
+                    <h4 class="text-muted">No rooms found</h4>
+                    <p class="text-muted">Try adjusting your filters or search criteria</p>
+                    <button class="btn btn-primary mt-3" onclick="resetFilters()">
+                        <i class="bi bi-arrow-clockwise me-2"></i>Reset Filters
+                    </button>
+                </div>
+            `;
+            return;
+        }
+        
+        container.innerHTML = rooms.map((room, index) => `
+            <div class="room-card card h-100">
+                <div class="room-image-container">
+                    <img src="${room.image_url || 'https://via.placeholder.com/400x250?text=No+Image'}" class="room-image w-100 h-100" alt="${room.title}">
+                    <div class="price-badge">
+                        $${parseFloat(room.price).toFixed(2)}/mo
+                    </div>
+                    <div class="room-overlay">
+                        <div class="text-white">
+                            <h5 class="mb-2">${room.title}</h5>
+                            <p class="mb-0"><i class="bi bi-geo-alt-fill me-2"></i>${room.location}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="room-body">
+                    <h5 class="room-title">${room.title}</h5>
+                    <p class="room-location">
+                        <i class="bi bi-geo-alt-fill me-2"></i>${room.location}
+                    </p>
+                    <p class="room-description">${room.description}</p>
+                    <div class="room-features">
+                        <span class="feature-tag"><i class="bi bi-house-door me-1"></i>Room</span>
+                        <span class="feature-tag"><i class="bi bi-wifi me-1"></i>WiFi</span>
+                        <span class="feature-tag"><i class="bi bi-shield-check me-1"></i>Verified</span>
+                    </div>
+                    <div class="room-actions">
+                        <a href="/rooms/${room.id}/" class="btn btn-primary flex-fill">
+                            <i class="bi bi-eye-fill me-2"></i>View Details
+                        </a>
+                        <button class="btn btn-outline-primary" onclick="toggleFavorite(${room.id})">
+                            <i class="bi bi-heart"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+        
+        // Re-trigger animations
+        container.querySelectorAll('.room-card').forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+        });
+        
+    } catch (e) {
+        console.error(e);
+        document.getElementById('rooms-container').innerHTML = `
+            <div class="col-12 text-center py-5">
+                <i class="bi bi-exclamation-triangle display-1 text-danger mb-3"></i>
+                <h4 class="text-danger">Error loading rooms</h4>
+                <p class="text-muted">Please try again later</p>
+                <button class="btn btn-primary mt-3" onclick="loadRooms()">
+                    <i class="bi bi-arrow-clockwise me-2"></i>Try Again
+                </button>
+            </div>
+        `;
+    }
+}
+
+function toggleFavorite(roomId) {
+    // Placeholder for favorite functionality
+    showToast('Favorite feature coming soon!', 'info');
+}
+document.getElementById('filters-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    loadRooms();
+});
+
+loadRooms();
+</script>
+{% endblock %}

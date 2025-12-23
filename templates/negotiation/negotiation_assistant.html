@@ -1,0 +1,179 @@
+﻿{% extends "base.html" %}
+{% block title %}AI Negotiation Assistant - RoomBook{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="mb-2">
+                        <i class="bi bi-handshake me-3 text-success"></i>
+                        AI Negotiation Assistant
+                    </h1>
+                    <p class="text-muted mb-0">Smart mediation for fair rent negotiations</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-handshake me-2"></i>
+                        AI Negotiation Assistant
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <!-- Negotiation Form Area -->
+                    <div id="negotiationForm" class="p-4">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="ownerMinPrice" class="form-label">Owner Minimum Price</label>
+                                <input type="number" class="form-control" id="ownerMinPrice" placeholder="Enter owner minimum price">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="tenantOffer" class="form-label">Tenant Offer</label>
+                                <input type="number" class="form-control" id="tenantOffer" placeholder="Enter tenant offer">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="marketPrice" class="form-label">Market Price (Optional)</label>
+                                <input type="number" class="form-control" id="marketPrice" placeholder="Enter market price">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="roomLocation" class="form-label">Room Location</label>
+                                <input type="text" class="form-control" id="roomLocation" placeholder="Enter room location">
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button class="btn btn-success btn-lg" onclick="analyzeNegotiation()">
+                                <i class="bi bi-handshake me-2"></i>Analyze Negotiation
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Negotiation Results -->
+                    <div id="negotiationResults" class="p-4 border-top" style="display: none;">
+                        <h5 class="mb-3">AI Negotiation Analysis</h5>
+                        <div id="resultsContent"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function analyzeNegotiation() {
+    const ownerMinPrice = document.getElementById("ownerMinPrice").value;
+    const tenantOffer = document.getElementById("tenantOffer").value;
+    const marketPrice = document.getElementById("marketPrice").value;
+    const roomLocation = document.getElementById("roomLocation").value;
+    
+    if (!ownerMinPrice || !tenantOffer) {
+        alert("Please enter both owner minimum price and tenant offer");
+        return;
+    }
+    
+    const data = {
+        owner_min_price: parseFloat(ownerMinPrice),
+        tenant_offer: parseFloat(tenantOffer),
+        market_price: marketPrice ? parseFloat(marketPrice) : null,
+        room_location: roomLocation || ""
+    };
+    
+    fetch("/api/negotiation/analyze/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCookie("csrftoken")
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        displayResults(data);
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("Error analyzing negotiation");
+    });
+}
+
+function displayResults(data) {
+    const resultsDiv = document.getElementById("negotiationResults");
+    const contentDiv = document.getElementById("resultsContent");
+    
+    let html = `
+        <div class="alert alert-info">
+            <h6><i class="bi bi-info-circle me-2"></i>Negotiation Analysis</h6>
+            <p><strong>Market Price:</strong> $${data.market_price}</p>
+            <p><strong>Recommended Price:</strong> $${data.recommended_price}</p>
+        </div>
+        
+        <div class="alert alert-success">
+            <h6><i class="bi bi-lightbulb me-2"></i>AI Suggestions</h6>
+            <ul class="mb-0">
+    `;
+    
+    data.suggestions.forEach(suggestion => {
+        html += `<li>${suggestion}</li>`;
+    });
+    
+    html += `</ul></div>`;
+    
+    if (data.counter_offers && data.counter_offers.length > 0) {
+        html += `
+            <div class="alert alert-warning">
+                <h6><i class="bi bi-arrow-left-right me-2"></i>Counter Offers</h6>
+                <ul class="mb-0">
+        `;
+        
+        data.counter_offers.forEach(offer => {
+            html += `<li>${offer}</li>`;
+        });
+        
+        html += `</ul></div>`;
+    }
+    
+    if (data.negotiation_tips && data.negotiation_tips.length > 0) {
+        html += `
+            <div class="alert alert-primary">
+                <h6><i class="bi bi-chat-quote me-2"></i>Negotiation Tips</h6>
+                <ul class="mb-0">
+        `;
+        
+        data.negotiation_tips.forEach(tip => {
+            html += `<li>${tip}</li>`;
+        });
+        
+        html += `</ul></div>`;
+    }
+    
+    contentDiv.innerHTML = html;
+    resultsDiv.style.display = "block";
+    
+    // Scroll to results
+    resultsDiv.scrollIntoView({ behavior: "smooth" });
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + "=")) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
+{% endblock %}

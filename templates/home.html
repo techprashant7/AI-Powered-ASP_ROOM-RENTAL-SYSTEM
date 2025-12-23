@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}ASP Room Rental Providers - Find Your Perfect Room{% endblock %}
+
+{% block content %}
+<section class="hero text-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 100px 0; position: relative; overflow: hidden;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-3 fw-bold mb-4">ASP Room Rental Providers</h1>
+                <h2 class="h4 mb-4">Your Trusted Partner in Premium Room Rentals</h2>
+                <p class="lead mb-5">Discover premium rooms, connect with verified owners, and experience hassle-free rental solutions with ASP's trusted platform.</p>
+                <div class="d-flex gap-3 justify-content-center">
+                    <a href="/rooms/" class="btn btn-light btn-lg px-5" style="position: relative; z-index: 9999; pointer-events: auto !important;" onclick="window.location.href='/rooms/'; return false;">
+                        <i class="bi bi-search me-2"></i>Browse Rooms
+                    </a>
+                    <a href="/about/" class="btn btn-outline-light btn-lg px-5">
+                        <i class="bi bi-info-circle me-2"></i>Learn More
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Premium Room Rental" class="img-fluid rounded-3 shadow-lg" style="max-height: 400px; object-fit: cover;">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">How It Works</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 text-center p-4">
+                    <i class="bi bi-search display-3 text-primary mb-3"></i>
+                    <h4>1. Browse Rooms</h4>
+                    <p class="text-muted">Explore available rooms with detailed information, images, and pricing</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 text-center p-4">
+                    <i class="bi bi-calendar-plus display-3 text-primary mb-3"></i>
+                    <h4>2. Book Online</h4>
+                    <p class="text-muted">Select your dates, duration, and submit a booking request</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 text-center p-4">
+                    <i class="bi bi-check-circle display-3 text-primary mb-3"></i>
+                    <h4>3. Get Approved</h4>
+                    <p class="text-muted">Wait for owner approval and move into your new room</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,271 @@
+{% extends 'base.html' %}
+{% block title %}Room Details - RoomBook{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div id="room-detail">
+        <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Booking Modal (replacing Bootstrap modal) -->
+<div class="modal" id="bookingModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999;">
+    <div class="modal-dialog" style="position: relative; margin: 50px auto; max-width: 500px;">
+        <div class="modal-content" style="background: white; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+            <div class="modal-header" style="padding: 15px; border-bottom: 1px solid #dee2e6; display: flex; justify-content: space-between; align-items: center;">
+                <h5 class="modal-title" style="margin: 0;"><i class="bi bi-calendar-plus"></i> Book This Room</h5>
+                <button type="button" class="btn-close" onclick="closeBookingModal()" style="background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 15px;">
+                <form id="booking-form">
+                    <div class="mb-3">
+                        <label class="form-label">Start Date</label>
+                        <input type="date" class="form-control" id="start_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Number of Months</label>
+                        <input type="number" class="form-control" id="months" min="1" max="24" value="1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Rent per Month</label>
+                        <input type="text" class="form-control" id="price_display" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">End Date (Auto-calculated)</label>
+                        <input type="text" class="form-control" id="end_date_display" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Total Rent</label>
+                        <input type="text" class="form-control fs-4 text-primary" id="total_display" readonly>
+                    </div>
+                    <div id="booking-error" class="alert alert-danger d-none"></div>
+                </form>
+            </div>
+            <div class="modal-footer" style="padding: 15px; border-top: 1px solid #dee2e6; display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn btn-secondary" onclick="closeBookingModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" id="submit-booking-btn">
+                    <i class="bi bi-send me-2"></i>Submit Booking
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<style>
+/* Fix modal backdrop z-index issues */
+.modal-backdrop {
+    z-index: 1040 !important;
+}
+
+.modal {
+    z-index: 1050 !important;
+}
+
+/* Ensure modal content is above backdrop */
+.modal-content {
+    z-index: 1060 !important;
+    position: relative;
+}
+
+/* Fix form input focus issues */
+.modal input,
+.modal select,
+.modal textarea,
+.modal button {
+    position: relative;
+    z-index: 1070 !important;
+}
+
+/* Remove backdrop overlay that blocks clicks */
+.modal-backdrop.show {
+    opacity: 0.5 !important;
+}
+</style>
+
+<script>
+// Django template variables
+const roomId = parseInt('{{ room_id|default:1 }}');
+let roomData = null;
+
+async function loadRoom() {
+    try {
+        const res = await fetch(`/api/rooms/${roomId}/`);
+        if (!res.ok) throw new Error('Room not found');
+        roomData = await res.json();
+        
+        document.getElementById('room-detail').innerHTML = `
+            <div class="row">
+                <div class="col-lg-7">
+                    <img src="${roomData.image_url || 'https://via.placeholder.com/800x400?text=No+Image'}" class="img-fluid rounded mb-3" alt="${roomData.title}">
+                </div>
+                <div class="col-lg-5">
+                    <h1>${roomData.title}</h1>
+                    <p class="text-muted"><i class="bi bi-geo-alt-fill"></i> ${roomData.location}</p>
+                    <h3 class="text-primary mb-4">$${parseFloat(roomData.price).toFixed(2)} <small class="text-muted">/month</small></h3>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header"><i class="bi bi-person-circle"></i> Owner Contact</div>
+                        <div class="card-body">
+                            <p class="mb-2"><strong>Name:</strong> ${roomData.owner_name}</p>
+                            <p class="mb-2"><strong>Phone:</strong> ${roomData.phone || 'Not provided'}</p>
+                            <p class="mb-0"><strong>Email:</strong> ${roomData.email || 'Not provided'}</p>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary btn-lg w-100" onclick="openBookingModal()">
+                        <i class="bi bi-calendar-check"></i> Book Now
+                    </button>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12">
+                    <h4>Description</h4>
+                    <p>${roomData.description}</p>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('price_display').value = '$' + parseFloat(roomData.price).toFixed(2);
+        updateCalculations();
+    } catch (e) {
+        console.error(e);
+        document.getElementById('room-detail').innerHTML = '<div class="alert alert-danger">Room not found</div>';
+    }
+}
+
+function openBookingModal() {
+    try {
+        const modalElement = document.getElementById('bookingModal');
+        if (!modalElement) {
+            console.error('Modal element not found');
+            showToast('Error: Modal not found', 'error');
+            return;
+        }
+        
+        // Show the modal
+        modalElement.style.display = 'block';
+        
+        const today = new Date().toISOString().split('T')[0];
+        
+        const startDateInput = document.getElementById('start_date');
+        if (startDateInput) {
+            startDateInput.min = today;
+            startDateInput.value = today;
+        }
+        
+        updateCalculations();
+        
+    } catch (error) {
+        console.error('Error opening booking modal:', error);
+        showToast('Error opening booking modal', 'error');
+    }
+}
+
+function closeBookingModal() {
+    try {
+        const modalElement = document.getElementById('bookingModal');
+        if (modalElement) {
+            modalElement.style.display = 'none';
+        }
+    } catch (error) {
+        console.error('Error closing booking modal:', error);
+    }
+}
+
+function updateCalculations() {
+    const startDate = document.getElementById('start_date').value;
+    const months = parseInt(document.getElementById('months').value) || 1;
+    
+    if (startDate && roomData) {
+        const start = new Date(startDate);
+        const end = new Date(start);
+        end.setMonth(end.getMonth() + months);
+        document.getElementById('end_date_display').value = end.toISOString().split('T')[0];
+        
+        const total = parseFloat(roomData.price) * months;
+        document.getElementById('total_display').value = '$' + total.toFixed(2);
+    }
+}
+
+document.getElementById('start_date')?.addEventListener('change', updateCalculations);
+document.getElementById('months')?.addEventListener('input', updateCalculations);
+document.getElementById('submit-booking-btn')?.addEventListener('click', submitBooking);
+
+async function submitBooking() {
+    const errorDiv = document.getElementById('booking-error');
+    const submitBtn = document.getElementById('submit-booking-btn');
+    errorDiv.classList.add('d-none');
+    
+    // Disable button and show loading state
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Submitting...';
+    
+    const startDate = document.getElementById('start_date').value;
+    const months = document.getElementById('months').value;
+    
+    if (!startDate || !months) {
+        errorDiv.textContent = 'Please fill in all required fields';
+        errorDiv.classList.remove('d-none');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="bi bi-send me-2"></i>Submit Booking';
+        return;
+    }
+    
+    try {
+        const res = await fetch('/api/bookings/add/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                room_id: roomId,
+                start_date: startDate,
+                months: months
+            })
+        });
+        
+        const data = await res.json();
+        
+        if (!res.ok) {
+            if (res.status === 401) {
+                showToast('Please login to make a booking', 'warning');
+                closeBookingModal(); 
+                setTimeout(() => {
+                    window.location.href = '/login/?next=' + encodeURIComponent(window.location.pathname);
+                }, 1500);
+                return;
+            }
+            throw new Error(data.error || 'Failed to submit booking');
+        }
+        
+        // Success
+        showToast('Booking submitted successfully!', 'success');
+        closeBookingModal(); 
+        
+        // Reset form
+        document.getElementById('booking-form').reset();
+        
+        // Redirect after delay
+        setTimeout(() => {
+            window.location.href = '/my-bookings/';
+        }, 1500);
+        
+    } catch (e) {
+        console.error(e);
+        errorDiv.textContent = e.message || 'Failed to submit booking';
+        errorDiv.classList.remove('d-none');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="bi bi-send me-2"></i>Submit Booking';
+    }
+}
+
+loadRoom();
+</script>
+{% endblock %}

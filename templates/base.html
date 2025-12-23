@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}RoomBook{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #f72585;
+            --success-color: #06ffa5;
+            --warning-color: #ffbe0b;
+            --danger-color: #fb5607;
+        }
+        
+        body { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .navbar { 
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .navbar-brand, .nav-link { 
+            color: var(--primary-color) !important; 
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: var(--accent-color) !important;
+            transform: translateY(-2px);
+        }
+        
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .card { 
+            border: none; 
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+        
+        .card:hover { 
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .btn-primary { 
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); 
+            border: none;
+            border-radius: 25px;
+            padding: 10px 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover { 
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #06ffa5, #00d084);
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+        }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, #ffbe0b, #ff6b35);
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #fb5607, #ff006e);
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+        }
+        
+        .room-image { 
+            height: 250px; 
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover .room-image {
+            transform: scale(1.05);
+        }
+        
+        .badge-pending { 
+            background: linear-gradient(135deg, var(--warning-color), #ff6b35); 
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .badge-approved { 
+            background: linear-gradient(135deg, var(--success-color), #00d084); 
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .badge-rejected { 
+            background: linear-gradient(135deg, var(--danger-color), #ff006e); 
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .badge-cancelled {
+            background: linear-gradient(135deg, #6c757d, #495057);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .hero { 
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); 
+            color: white; 
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.1)" d="M0,96L48,112C96,128,192,160,288,165.3C384,171,480,149,576,128C672,107,768,85,864,96C960,107,1056,149,1152,154.7C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+            background-size: cover;
+        }
+        
+        .main-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            margin: 20px auto;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .footer {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 60px;
+            border-top: 3px solid var(--primary-color);
+        }
+        
+        .toast-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 1050;
+        }
+        
+        .custom-toast {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-left: 4px solid var(--primary-color);
+            min-width: 300px;
+        }
+        
+        .spinner-border {
+            color: var(--primary-color);
+        }
+        
+        .table-hover tbody tr:hover {
+            background-color: rgba(67, 97, 238, 0.05);
+            transform: scale(1.01);
+            transition: all 0.2s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
+        }
+        
+        .nav-tabs .nav-link.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+        }
+        
+        .nav-tabs .nav-link {
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 25px;
+            margin: 0 5px;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        /* Mobile Responsive Enhancements */
+        @media (max-width: 768px) {
+            body {
+                font-size: 14px;
+            }
+            
+            .navbar {
+                padding: 10px 0;
+            }
+            
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+            
+            .main-container {
+                margin: 10px;
+                padding: 20px;
+                border-radius: 15px;
+            }
+            
+            .card {
+                margin-bottom: 20px;
+            }
+            
+            .card:hover {
+                transform: none;
+            }
+            
+            .room-image {
+                height: 200px;
+            }
+            
+            .card:hover .room-image {
+                transform: none;
+            }
+            
+            .hero {
+                padding: 60px 0;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .page-header {
+                padding: 40px 0;
+                margin: -20px -20px 20px -20px;
+                border-radius: 15px 15px 0 0;
+            }
+            
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .footer {
+                padding: 30px 0 15px;
+            }
+            
+            .footer h5 {
+                font-size: 1rem;
+            }
+            
+            .footer .row {
+                text-align: center;
+            }
+            
+            .footer .col-md-4 {
+                margin-bottom: 20px;
+            }
+            
+            .toast-container {
+                top: 70px;
+                right: 10px;
+                left: 10px;
+            }
+            
+            .custom-toast {
+                min-width: auto;
+                margin-bottom: 10px;
+            }
+            
+            .btn {
+                padding: 8px 20px;
+                font-size: 14px;
+            }
+            
+            .btn-lg {
+                padding: 12px 30px;
+                font-size: 16px;
+            }
+            
+            .table {
+                font-size: 12px;
+            }
+            
+            .table th, .table td {
+                padding: 8px 5px;
+            }
+            
+            .form-control, .form-select {
+                font-size: 14px;
+                padding: 10px 12px;
+            }
+            
+            .form-floating label {
+                font-size: 12px;
+            }
+            
+            .rooms-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .room-card .room-body {
+                padding: 20px;
+            }
+            
+            .room-card .room-title {
+                font-size: 1.1rem;
+            }
+            
+            .room-card .room-features {
+                gap: 10px;
+            }
+            
+            .room-card .feature-tag {
+                font-size: 0.75rem;
+                padding: 4px 10px;
+            }
+            
+            .filter-card {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .filter-card .row {
+                gap: 10px;
+            }
+            
+            .filter-card .col-md-3,
+            .filter-card .col-md-2 {
+                flex: 1 1 100%;
+                max-width: 100%;
+            }
+            
+            .form-section {
+                padding: 20px;
+                margin-bottom: 15px;
+            }
+            
+            .section-title {
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .main-container {
+                margin: 5px;
+                padding: 15px;
+                border-radius: 10px;
+            }
+            
+            .hero {
+                padding: 40px 0;
+            }
+            
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+            
+            .page-header {
+                padding: 30px 0;
+                margin: -15px -15px 15px -15px;
+            }
+            
+            .page-header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .room-card .room-image-container {
+                height: 180px;
+            }
+            
+            .room-card .room-body {
+                padding: 15px;
+            }
+            
+            .room-card .room-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .room-card .room-actions .btn {
+                width: 100%;
+            }
+            
+            .btn-lg {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            
+            .table {
+                font-size: 11px;
+            }
+            
+            .table th, .table td {
+                padding: 6px 3px;
+            }
+            
+            .d-flex.gap-3 {
+                flex-direction: column;
+                gap: 10px !important;
+            }
+            
+            .d-flex.gap-2 {
+                flex-direction: column;
+                gap: 8px !important;
+            }
+            
+            .footer {
+                padding: 20px 0 10px;
+            }
+            
+            .footer h5 {
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* Touch-friendly interactions */
+        @media (hover: none) and (pointer: coarse) {
+            .card:hover {
+                transform: none;
+            }
+            
+            .btn:hover {
+                transform: none;
+            }
+            
+            .nav-link:hover {
+                transform: none;
+            }
+            
+            .room-card:hover .room-image {
+                transform: none;
+            }
+            
+            .room-card:hover .room-overlay {
+                opacity: 1;
+            }
+        }
+        
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .card {
+                border: 2px solid #000;
+            }
+            
+            .btn {
+                border: 2px solid #000;
+            }
+            
+            .form-control, .form-select {
+                border: 2px solid #000;
+            }
+        }
+        
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="bi bi-house-door-fill me-2"></i>ASP Room Rental Providers
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">
+                        <i class="bi bi-house-door me-1"></i>Home
+                    </a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about/">
+                        <i class="bi bi-info-circle me-1"></i>About
+                    </a></li>
+                    <li class="nav-item"><a class="nav-link" href="/services/">
+                        <i class="bi bi-grid me-1"></i>Services
+                    </a></li>
+                    <li class="nav-item"><a class="nav-link" href="/rooms/">
+                        <i class="bi bi-search me-1"></i>Browse Rooms
+                    </a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact/">
+                        <i class="bi bi-envelope me-1"></i>Contact
+                    </a></li>
+                </ul>
+                <ul class="navbar-nav" id="auth-nav">
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="main-container fade-in-up">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3"><i class="bi bi-house-door-fill me-2"></i>RoomBook</h5>
+                    <p class="text-white-50">Find your perfect room rental with our easy-to-use platform. Connect with trusted hosts and book your ideal space.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="/rooms/" class="text-white-50 text-decoration-none">Browse Rooms</a></li>
+                        <li class="mb-2"><a href="/login/" class="text-white-50 text-decoration-none">Login</a></li>
+                        <li class="mb-2"><a href="/register/" class="text-white-50 text-decoration-none">Register</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Contact</h5>
+                    <p class="text-white-50 mb-2"><i class="bi bi-envelope me-2"></i>support@roombook.com</p>
+                    <p class="text-white-50 mb-2"><i class="bi bi-phone me-2"></i>+1 (555) 123-4567</p>
+                    <div class="mt-3">
+                        <a href="#" class="text-white me-3"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-white me-3"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="border-secondary">
+            <div class="text-center text-white-50 py-3">
+                <p class="mb-0">&copy; 2024 RoomBook. All rights reserved. Made with <i class="bi bi-heart-fill text-danger"></i> for room seekers.</p>
+                <p class="mb-0 mt-2">
+                    <a href="/privacy/" class="text-white-50 text-decoration-none me-3">Privacy Policy</a>
+                    <a href="/terms/" class="text-white-50 text-decoration-none">Terms of Service</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function showToast(message, type = 'success') {
+            const toastContainer = document.getElementById('toast-container');
+            const toastId = 'toast-' + Date.now();
+            
+            const iconMap = {
+                'success': 'bi-check-circle-fill text-success',
+                'error': 'bi-x-circle-fill text-danger',
+                'warning': 'bi-exclamation-triangle-fill text-warning',
+                'info': 'bi-info-circle-fill text-info'
+            };
+            
+            const toastHTML = `
+                <div id="${toastId}" class="toast custom-toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <i class="bi ${iconMap[type]} me-2"></i>
+                            ${message}
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            `;
+            
+            toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+            const toastElement = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastElement, {
+                autohide: true,
+                delay: 3000
+            });
+            
+            toast.show();
+            
+            toastElement.addEventListener('hidden.bs.toast', () => {
+                toastElement.remove();
+            });
+        }
+
+        async function loadUnreadNotificationsCount() {
+            try {
+                const res = await fetch('/api/notifications/unread-count/');
+                const data = await res.json();
+                const badge = document.getElementById('notifications-unread-badge');
+                if (!badge) return;
+
+                const count = parseInt(data.count || 0);
+                if (count > 0) {
+                    badge.textContent = count;
+                    badge.classList.remove('d-none');
+                } else {
+                    badge.classList.add('d-none');
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        async function loadAuthNav() {
+            try {
+                const res = await fetch('/api/user/');
+                const user = await res.json();
+                const authNav = document.getElementById('auth-nav');
+                
+                if (user.is_authenticated) {
+                    authNav.innerHTML = `
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle me-1"></i>${user.username}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="/profile/"><i class="bi bi-person-vcard me-2"></i>Profile</a></li>
+                                <li><a class="dropdown-item" href="/my-bookings/"><i class="bi bi-calendar-check me-2"></i>My Bookings</a></li>
+                                <li><a class="dropdown-item" href="/recommendations/"><i class="bi bi-robot me-2"></i>AI Recommendations</a></li>
+                                <li><a class="dropdown-item" href="/chatbot/"><i class="bi bi-chat-dots me-2"></i>AI Assistant</a></li>
+                                <li><a class="dropdown-item" href="/negotiation/"><i class="bi bi-handshake me-2"></i>AI Negotiation</a></li>
+                                <li><a class="dropdown-item" href="/agreement-generator/"><i class="bi bi-file-earmark-text me-2"></i>Agreement Generator</a></li>
+                                {% if user.is_staff %}
+                                    <li><a class="dropdown-item" href="/owner/rooms/"><i class="bi bi-door-open me-2"></i>My Rooms</a></li>
+                                    <li><a class="dropdown-item" href="/owner/bookings/"><i class="bi bi-inbox me-2"></i>Received Requests</a></li>
+                                {% endif %}
+                                {% if user.is_superuser %}
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-danger" href="/manage-users/"><i class="bi bi-people me-2"></i>User Management</a></li>
+                                {% endif %}
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/notifications/"><i class="bi bi-bell me-2"></i>Notifications</a></li>
+                                <li><a class="dropdown-item" href="/logout/"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                            </ul>
+                        </li>
+                    `;
+                    loadUnreadNotificationsCount();
+                } else {
+                    authNav.innerHTML = `
+                        <li class="nav-item"><a class="nav-link" href="/login/">
+                            <i class="bi bi-box-arrow-in-right me-1"></i>Login
+                        </a></li>
+                        <li class="nav-item"><a class="nav-link" href="/register/">
+                            <i class="bi bi-person-plus me-1"></i>Register
+                        </a></li>
+                    `;
+                }
+            } catch (e) { console.error(e); }
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAuthNav();
+            
+            // Add smooth scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
