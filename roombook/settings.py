@@ -87,7 +87,12 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 X_FRAME_OPTIONS = 'ALLOWALL'
-CSRF_TRUSTED_ORIGINS = ['https://*.replit.dev', 'https://*.replit.app', 'https://*.onrender.com']
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.replit.dev', 
+    'https://*.replit.app', 
+    'https://*.onrender.com',
+    'https://ai-powered-asp-room-rental-system-3.onrender.com'
+]
 
 # Google OAuth Settings
 GOOGLE_OAUTH2_CLIENT_ID = os.environ.get('GOOGLE_OAUTH2_CLIENT_ID', '')
@@ -113,5 +118,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "https://*.replit.dev",
     "https://*.replit.app",
-    "https://*.onrender.com"
+    "https://*.onrender.com",
+    "https://ai-powered-asp-room-rental-system-3.onrender.com"
 ]
