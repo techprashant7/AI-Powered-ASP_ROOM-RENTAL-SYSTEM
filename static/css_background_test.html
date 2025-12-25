@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSS Background Test</title>
+    <style>
+        .room-card {
+            width: 300px;
+            height: 200px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            display: inline-block;
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            line-height: 200px;
+            color: white;
+            font-weight: bold;
+        }
+        .room-1 { background-image: url('/static/images/about/r1.jpg'); }
+        .room-2 { background-image: url('/static/images/about/r2.jpg'); }
+        .room-3 { background-image: url('/static/images/about/r3.jpg'); }
+        .room-4 { background-image: url('/static/images/about/r4.jpg'); }
+        .room-5 { background-image: url('/static/images/about/r5.jpg'); }
+    </style>
+</head>
+<body>
+    <h1>CSS Background Image Test</h1>
+    <div class="room-card room-1">Room 1</div>
+    <div class="room-card room-2">Room 2</div>
+    <div class="room-card room-3">Room 3</div>
+    <div class="room-card room-4">Room 4</div>
+    <div class="room-card room-5">Room 5</div>
+    
+    <p>If you see colored backgrounds with room numbers, CSS background images are working.</p>
+</body>
+</html>

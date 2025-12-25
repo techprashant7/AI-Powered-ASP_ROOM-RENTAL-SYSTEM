@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Image Test</title>
+    <style>
+        .test-card { border: 1px solid #ccc; margin: 10px; padding: 15px; }
+        img { width: 200px; height: 150px; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <h1>Simple Image Test - No JavaScript</h1>
+    
+    <div class="test-card">
+        <h3>Room 1 - Direct Static Image</h3>
+        <img src="/static/images/about/r1.jpg" alt="Room 1">
+    </div>
+    
+    <div class="test-card">
+        <h3>Room 2 - Direct Static Image</h3>
+        <img src="/static/images/about/r2.jpg" alt="Room 2">
+    </div>
+    
+    <div class="test-card">
+        <h3>Room 3 - Direct Static Image</h3>
+        <img src="/static/images/about/r3.jpg" alt="Room 3">
+    </div>
+    
+    <div class="test-card">
+        <h3>Room 1 - Absolute URL</h3>
+        <img src="http://127.0.0.1:8003/static/images/about/r1.jpg" alt="Room 1 Absolute">
+    </div>
+    
+    <div class="test-card">
+        <h3>Room 2 - Absolute URL</h3>
+        <img src="http://127.0.0.1:8003/static/images/about/r2.jpg" alt="Room 2 Absolute">
+    </div>
+    
+    <p>If you can see all 5 images above, static files are working correctly.</p>
+</body>
+</html>
