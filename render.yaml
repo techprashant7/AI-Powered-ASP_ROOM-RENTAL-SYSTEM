@@ -3,7 +3,7 @@ services:
     name: asp-rental-system
     env: python
     plan: free
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install -r requirements.txt && python manage.py makemigrations && python manage.py migrate
     startCommand: gunicorn roombook.wsgi:application
     autoDeploy: true
     envVars:
