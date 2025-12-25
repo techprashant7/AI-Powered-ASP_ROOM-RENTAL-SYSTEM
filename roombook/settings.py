@@ -95,7 +95,7 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 # Base URL for callbacks
-BASE_URL = os.environ.get('BASE_URL', 'http://127.0.0.1:8000')
+BASE_URL = os.environ.get('BASE_URL', 'http://0.0.0.0:8000')
 
 # Google OAuth Settings
 GOOGLE_OAUTH2_CLIENT_ID = os.environ.get('GOOGLE_OAUTH2_CLIENT_ID', '')
