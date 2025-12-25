@@ -94,6 +94,9 @@ CSRF_TRUSTED_ORIGINS = [
     'https://ai-powered-asp-room-rental-system-3.onrender.com'
 ]
 
+# Base URL for callbacks
+BASE_URL = os.environ.get('BASE_URL', 'http://127.0.0.1:8000')
+
 # Google OAuth Settings
 GOOGLE_OAUTH2_CLIENT_ID = os.environ.get('GOOGLE_OAUTH2_CLIENT_ID', '')
 GOOGLE_OAUTH2_CLIENT_SECRET = os.environ.get('GOOGLE_OAUTH2_CLIENT_SECRET', '')
@@ -108,9 +111,6 @@ GOOGLE_OAUTH2_SCOPES = [
 # Razorpay Configuration
 RAZORPAY_KEY_ID = os.environ.get('RAZORPAY_KEY_ID', '')
 RAZORPAY_KEY_SECRET = os.environ.get('RAZORPAY_KEY_SECRET', '')
-
-# Base URL for callbacks
-BASE_URL = os.environ.get('BASE_URL', 'http://127.0.0.1:8000')
 
 # CORS Settings
 CORS_ALLOWED_ORIGINS = [
