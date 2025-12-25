@@ -17,6 +17,12 @@ services:
         generateValue: true
       - key: PYTHON_VERSION
         value: 3.11
+      - key: BASE_URL
+        value: https://ai-powered-asp-room-rental-system-3.onrender.com
+      - key: GOOGLE_OAUTH2_CLIENT_ID
+        sync: false
+      - key: GOOGLE_OAUTH2_CLIENT_SECRET
+        sync: false
 
 databases:
   - name: asp-rental-db
