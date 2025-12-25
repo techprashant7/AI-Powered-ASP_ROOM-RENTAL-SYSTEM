@@ -23,6 +23,8 @@ services:
         sync: false
       - key: GOOGLE_OAUTH2_CLIENT_SECRET
         sync: false
+      - key: DJANGO_SETTINGS_MODULE
+        value: roombook.settings
 
 databases:
   - name: asp-rental-db
