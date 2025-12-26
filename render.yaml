@@ -4,7 +4,7 @@ services:
     env: python
     plan: free
     buildCommand: pip install -r requirements.txt && python manage.py makemigrations --noinput && python manage.py migrate --fake-initial --noinput && python manage.py migrate --noinput && python manage.py collectstatic --noinput
-    startCommand: gunicorn roombook.wsgi:application
+    startCommand: gunicorn roombook.wsgi:application --bind=0.0.0.0:$PORT
     autoDeploy: true
     envVars:
       - key: DEBUG
@@ -16,9 +16,9 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: PYTHON_VERSION
-        value: 3.11
+        value: 3.13
       - key: BASE_URL
-        value: https://ai-powered-asp-room-rental-system-3.onrender.com
+        value: https://ai-powered-asp-room-rental-system-7.onrender.com
       - key: GOOGLE_OAUTH2_CLIENT_ID
         sync: false
       - key: GOOGLE_OAUTH2_CLIENT_SECRET
