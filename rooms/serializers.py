@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.conf import settings
 from django.contrib.auth.models import User
 from .models import Room, Booking, UserProfile, Notification, Invoice, Payment
 
@@ -23,12 +24,19 @@ class RoomSerializer(serializers.ModelSerializer):
         return f"{obj.owner.first_name} {obj.owner.last_name}".strip() or obj.owner.username
 
     def get_image_url(self, obj):
-        if obj.image:
-            request = self.context.get('request')
-            if request:
-                return request.build_absolute_uri(obj.image.url)
-            return obj.image.url
-        return None
+        if not obj.image:
+            return None
+
+        request = self.context.get('request')
+        name = (getattr(obj.image, 'name', '') or '').lstrip('/')
+
+        if name and '/' not in name and name.lower().startswith('r') and name.lower().endswith('.jpg'):
+            rel = f"images/about/{name}"
+            url = f"{settings.STATIC_URL}{rel}"
+            return request.build_absolute_uri(url) if request else url
+
+        url = obj.image.url
+        return request.build_absolute_uri(url) if request else url
 
 class BookingSerializer(serializers.ModelSerializer):
     room_title = serializers.CharField(source='room.title', read_only=True)
