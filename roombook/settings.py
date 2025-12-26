@@ -58,6 +58,14 @@ DATABASES = {
     }
 }
 
+# Override database URL for Render
+import os
+if 'DATABASE_URL' in os.environ:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DATABASE_URL'),
+    }
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -115,6 +123,7 @@ RAZORPAY_KEY_SECRET = os.environ.get('RAZORPAY_KEY_SECRET', '')
 # CORS Settings
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
+    "http://0.0.0.0:8000",
     "http://localhost:8000",
     "https://*.replit.dev",
     "https://*.replit.app",
