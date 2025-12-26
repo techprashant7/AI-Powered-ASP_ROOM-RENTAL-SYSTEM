@@ -1,0 +1,98 @@
+2025-12-26 22:38:32.377 IST [23800] LOG:  starting PostgreSQL 18.1 on x86_64-windows, compiled by msvc-19.44.35219, 64-bit
+2025-12-26 22:38:32.385 IST [23800] LOG:  listening on IPv6 address "::1", port 5432
+2025-12-26 22:38:32.386 IST [23800] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2025-12-26 22:38:32.546 IST [19052] LOG:  database system was shut down at 2025-12-26 22:38:22 IST
+2025-12-26 22:38:32.562 IST [23800] LOG:  database system is ready to accept connections
+2025-12-26 17:09:32.705 GMT [5128] FATAL:  invalid value for parameter "timezone_abbreviations": "Default"
+2025-12-26 22:40:32.657 IST [22992] WARNING:  autovacuum worker took too long to start; canceled
+2025-12-26 17:10:32.702 GMT [28780] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:10:32.716 GMT [28780] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:10:32.724 GMT [28780] FATAL:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezonesets": No such file or directory
+2025-12-26 17:10:32.724 GMT [28780] HINT:  This may indicate an incomplete PostgreSQL installation, or that the file "C:/Program Files/PostgreSQL/18/bin/postgres.exe" has been moved away from its proper location.
+2025-12-26 22:41:32.662 IST [22992] WARNING:  autovacuum worker took too long to start; canceled
+2025-12-26 17:11:32.707 GMT [13792] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:11:32.707 GMT [13792] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:11:32.715 GMT [13792] FATAL:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezonesets": No such file or directory
+2025-12-26 17:11:32.715 GMT [13792] HINT:  This may indicate an incomplete PostgreSQL installation, or that the file "C:/Program Files/PostgreSQL/18/bin/postgres.exe" has been moved away from its proper location.
+2025-12-26 22:42:32.674 IST [22992] WARNING:  autovacuum worker took too long to start; canceled
+2025-12-26 17:12:32.719 GMT [17460] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:12:32.720 GMT [17460] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:12:32.728 GMT [17460] FATAL:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezonesets": No such file or directory
+2025-12-26 17:12:32.728 GMT [17460] HINT:  This may indicate an incomplete PostgreSQL installation, or that the file "C:/Program Files/PostgreSQL/18/bin/postgres.exe" has been moved away from its proper location.
+2025-12-26 22:55:01.540 IST [16820] LOG:  checkpoint starting: time
+2025-12-26 22:55:01.649 IST [22992] WARNING:  autovacuum worker took too long to start; canceled
+2025-12-26 22:55:01.759 IST [16820] LOG:  checkpoint complete: wrote 0 buffers (0.0%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.005 s, sync=0.007 s, total=0.259 s; sync files=2, longest=0.004 s, average=0.004 s; distance=0 kB, estimate=0 kB; lsn=0/17F13C0, redo lsn=0/17F1368
+2025-12-26 17:25:02.208 GMT [5508] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:25:02.208 GMT [5508] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:25:02.218 GMT [5508] FATAL:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezonesets": No such file or directory
+2025-12-26 17:25:02.218 GMT [5508] HINT:  This may indicate an incomplete PostgreSQL installation, or that the file "C:/Program Files/PostgreSQL/18/bin/postgres.exe" has been moved away from its proper location.
+2025-12-26 22:56:01.658 IST [22992] WARNING:  autovacuum worker took too long to start; canceled
+2025-12-26 17:26:01.722 GMT [22960] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:26:01.723 GMT [22960] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:26:01.734 GMT [22960] FATAL:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezonesets": No such file or directory
+2025-12-26 17:26:01.734 GMT [22960] HINT:  This may indicate an incomplete PostgreSQL installation, or that the file "C:/Program Files/PostgreSQL/18/bin/postgres.exe" has been moved away from its proper location.
+2025-12-26 22:57:01.660 IST [22992] WARNING:  autovacuum worker took too long to start; canceled
+2025-12-26 17:27:01.702 GMT [31892] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:27:01.702 GMT [31892] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:27:01.709 GMT [31892] FATAL:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezonesets": No such file or directory
+2025-12-26 17:27:01.709 GMT [31892] HINT:  This may indicate an incomplete PostgreSQL installation, or that the file "C:/Program Files/PostgreSQL/18/bin/postgres.exe" has been moved away from its proper location.
+2025-12-26 22:58:01.665 IST [22992] WARNING:  autovacuum worker took too long to start; canceled
+2025-12-26 17:28:01.702 GMT [27044] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:28:01.702 GMT [27044] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:28:01.710 GMT [27044] FATAL:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezonesets": No such file or directory
+2025-12-26 17:28:01.710 GMT [27044] HINT:  This may indicate an incomplete PostgreSQL installation, or that the file "C:/Program Files/PostgreSQL/18/bin/postgres.exe" has been moved away from its proper location.
+2025-12-26 22:59:01.669 IST [22992] WARNING:  autovacuum worker took too long to start; canceled
+2025-12-26 17:29:01.729 GMT [22120] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:29:01.730 GMT [22120] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:29:01.743 GMT [22120] FATAL:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezonesets": No such file or directory
+2025-12-26 17:29:01.743 GMT [22120] HINT:  This may indicate an incomplete PostgreSQL installation, or that the file "C:/Program Files/PostgreSQL/18/bin/postgres.exe" has been moved away from its proper location.
+2025-12-26 23:00:01.675 IST [22992] WARNING:  autovacuum worker took too long to start; canceled
+2025-12-26 17:30:01.714 GMT [5392] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:30:01.714 GMT [5392] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:30:01.721 GMT [5392] FATAL:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezonesets": No such file or directory
+2025-12-26 17:30:01.721 GMT [5392] HINT:  This may indicate an incomplete PostgreSQL installation, or that the file "C:/Program Files/PostgreSQL/18/bin/postgres.exe" has been moved away from its proper location.
+2025-12-26 17:30:36.889 GMT [29556] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:30:36.889 GMT [29556] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:30:36.896 GMT [29556] FATAL:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezonesets": No such file or directory
+2025-12-26 17:30:36.896 GMT [29556] HINT:  This may indicate an incomplete PostgreSQL installation, or that the file "C:/Program Files/PostgreSQL/18/bin/postgres.exe" has been moved away from its proper location.
+2025-12-26 23:01:01.677 IST [22992] WARNING:  autovacuum worker took too long to start; canceled
+2025-12-26 17:31:01.717 GMT [14780] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:31:01.718 GMT [14780] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:31:01.725 GMT [14780] FATAL:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezonesets": No such file or directory
+2025-12-26 17:31:01.725 GMT [14780] HINT:  This may indicate an incomplete PostgreSQL installation, or that the file "C:/Program Files/PostgreSQL/18/bin/postgres.exe" has been moved away from its proper location.
+2025-12-26 17:31:08.388 GMT [29944] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:31:08.388 GMT [29944] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:31:08.395 GMT [29944] FATAL:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezonesets": No such file or directory
+2025-12-26 17:31:08.395 GMT [29944] HINT:  This may indicate an incomplete PostgreSQL installation, or that the file "C:/Program Files/PostgreSQL/18/bin/postgres.exe" has been moved away from its proper location.
+2025-12-26 17:31:08.496 GMT [25896] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:31:08.496 GMT [25896] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:31:08.503 GMT [25896] FATAL:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezonesets": No such file or directory
+2025-12-26 17:31:08.503 GMT [25896] HINT:  This may indicate an incomplete PostgreSQL installation, or that the file "C:/Program Files/PostgreSQL/18/bin/postgres.exe" has been moved away from its proper location.
+2025-12-26 17:31:28.278 GMT [6980] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:31:28.278 GMT [6980] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:31:28.284 GMT [6980] FATAL:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezonesets": No such file or directory
+2025-12-26 17:31:28.284 GMT [6980] HINT:  This may indicate an incomplete PostgreSQL installation, or that the file "C:/Program Files/PostgreSQL/18/bin/postgres.exe" has been moved away from its proper location.
+2025-12-26 23:01:43.068 IST [23800] LOG:  io worker (PID 6624) was terminated by exception 0xFFFFFFFF
+2025-12-26 23:01:43.068 IST [23800] HINT:  See C include file "ntstatus.h" for a description of the hexadecimal value.
+2025-12-26 23:01:43.068 IST [23800] LOG:  terminating any other active server processes
+2025-12-26 23:01:43.098 IST [23800] LOG:  all server processes terminated; reinitializing
+2025-12-26 17:31:43.252 GMT [31960] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:31:43.252 GMT [31960] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:31:43.262 GMT [31960] FATAL:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezonesets": No such file or directory
+2025-12-26 17:31:43.262 GMT [31960] HINT:  This may indicate an incomplete PostgreSQL installation, or that the file "C:/Program Files/PostgreSQL/18/bin/postgres.exe" has been moved away from its proper location.
+2025-12-26 17:31:43.270 GMT [31676] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:31:43.273 GMT [31676] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:31:43.272 GMT [13960] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:31:43.275 GMT [13960] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:31:43.285 GMT [31676] FATAL:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezonesets": No such file or directory
+2025-12-26 17:31:43.285 GMT [31676] HINT:  This may indicate an incomplete PostgreSQL installation, or that the file "C:/Program Files/PostgreSQL/18/bin/postgres.exe" has been moved away from its proper location.
+2025-12-26 17:31:43.286 GMT [13960] FATAL:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezonesets": No such file or directory
+2025-12-26 17:31:43.286 GMT [13960] HINT:  This may indicate an incomplete PostgreSQL installation, or that the file "C:/Program Files/PostgreSQL/18/bin/postgres.exe" has been moved away from its proper location.
+2025-12-26 17:31:43.303 GMT [26604] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:31:43.303 GMT [26604] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:31:43.313 GMT [26604] FATAL:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezonesets": No such file or directory
+2025-12-26 17:31:43.313 GMT [26604] HINT:  This may indicate an incomplete PostgreSQL installation, or that the file "C:/Program Files/PostgreSQL/18/bin/postgres.exe" has been moved away from its proper location.
+2025-12-26 17:31:43.342 GMT [31412] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:31:43.342 GMT [31412] LOG:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezone": No such file or directory
+2025-12-26 17:31:43.352 GMT [31412] FATAL:  could not open directory "C:/Program Files/PostgreSQL/18/share/timezonesets": No such file or directory
+2025-12-26 17:31:43.352 GMT [31412] HINT:  This may indicate an incomplete PostgreSQL installation, or that the file "C:/Program Files/PostgreSQL/18/bin/postgres.exe" has been moved away from its proper location.
