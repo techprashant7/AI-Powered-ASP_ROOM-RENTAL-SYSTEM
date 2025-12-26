@@ -139,5 +139,5 @@ CORS_ALLOWED_ORIGINS = [
     "https://*.replit.dev",
     "https://*.replit.app",
     "https://*.onrender.com",
-    "https://ai-powered-asp-room-rental-system-3.onrender.com"
+    "https://ai-powered-asp-room-rental-system-7.onrender.com"
 ]
