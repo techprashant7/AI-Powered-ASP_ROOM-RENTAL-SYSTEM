@@ -3,12 +3,16 @@ services:
     name: asp-rental-system
     env: python
     plan: free
-    buildCommand: pip install -r requirements.txt && mkdir -p /opt/render/project/src && python manage.py migrate --noinput && python manage.py collectstatic --noinput
+    buildCommand: pip install -r requirements.txt && python manage.py migrate --noinput && python manage.py collectstatic --noinput
     startCommand: gunicorn roombook.wsgi:application --bind=0.0.0.0:$PORT
     autoDeploy: true
     envVars:
       - key: DEBUG
         value: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: asp-rental-db
+          property: connectionString
       - key: SECRET_KEY
         generateValue: true
       - key: PYTHON_VERSION
@@ -21,3 +25,7 @@ services:
         sync: false
       - key: DJANGO_SETTINGS_MODULE
         value: roombook.settings
+
+databases:
+  - name: asp-rental-db
+    plan: free
