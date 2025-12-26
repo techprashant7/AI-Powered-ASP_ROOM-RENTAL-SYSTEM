@@ -8,6 +8,7 @@ from django.utils import timezone
 from django.core.mail import send_mail
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
+from django.urls import reverse
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.decorators import parser_classes
@@ -396,6 +397,15 @@ def register_page(request):
 
         try:
             _send_otp_email(email, otp)
+        except RuntimeError:
+            # Email not configured (common on Render). Auto-verify for demo deployments.
+            profile.email_verified = True
+            profile.otp_code = ''
+            profile.save()
+            user.is_active = True
+            user.save()
+            login(request, user)
+            return redirect('room_list')
         except Exception as e:
             return render(request, 'auth/register.html', {'error': str(e)})
 
@@ -1383,7 +1393,7 @@ def negotiation_assistant_page(request, room_id=None):
         room = get_object_or_404(Room, id=room_id)
         # Check if user is owner or has booking for this room
         if room.owner != request.user and not Booking.objects.filter(user=request.user, room=room).exists():
-            return redirect('home')
+            return redirect('room_list')
     else:
         room = None
     
@@ -1454,12 +1464,16 @@ def google_oauth_login(request):
     """Initiate Google OAuth login"""
     if not settings.GOOGLE_OAUTH2_CLIENT_ID or not settings.GOOGLE_OAUTH2_CLIENT_SECRET:
         return JsonResponse({'error': 'Google OAuth not configured'}, status=500)
+
+    # Build redirect URI dynamically from current host/scheme (works on Render)
+    redirect_uri = request.build_absolute_uri(reverse('google_oauth_callback'))
+    request.session['google_oauth_redirect_uri'] = redirect_uri
     
     # Build the OAuth URL
     auth_url = 'https://accounts.google.com/o/oauth2/v2/auth'
     params = {
         'client_id': settings.GOOGLE_OAUTH2_CLIENT_ID,
-        'redirect_uri': settings.GOOGLE_OAUTH2_REDIRECT_URI,
+        'redirect_uri': redirect_uri,
         'scope': ' '.join(settings.GOOGLE_OAUTH2_SCOPES),
         'response_type': 'code',
         'access_type': 'offline',
@@ -1482,6 +1496,8 @@ def google_oauth_callback(request):
         return JsonResponse({'error': 'Authorization code not found'}, status=400)
     
     try:
+        redirect_uri = request.session.get('google_oauth_redirect_uri') or request.build_absolute_uri(reverse('google_oauth_callback'))
+
         # Exchange authorization code for access token
         token_url = 'https://oauth2.googleapis.com/token'
         token_data = {
@@ -1489,7 +1505,7 @@ def google_oauth_callback(request):
             'client_secret': settings.GOOGLE_OAUTH2_CLIENT_SECRET,
             'code': code,
             'grant_type': 'authorization_code',
-            'redirect_uri': settings.GOOGLE_OAUTH2_REDIRECT_URI
+            'redirect_uri': redirect_uri
         }
         
         token_response = requests.post(token_url, data=token_data)
@@ -1515,9 +1531,12 @@ def google_oauth_callback(request):
         # Check if user already exists
         try:
             user = User.objects.get(email=email)
-            # Log in existing user
+            if not user.is_active:
+                user.is_active = True
+                user.save()
+            UserProfile.objects.get_or_create(user=user)
             login(request, user)
-            return redirect('home')
+            return redirect('room_list')
         except User.DoesNotExist:
             # Create new user
             username = email.split('@')[0]
@@ -1534,13 +1553,11 @@ def google_oauth_callback(request):
                 is_active=True  # Google users are pre-verified
             )
             
-            # Create user profile
-            UserProfile.objects.create(
-                user=user,
-                phone='',
-                is_verified=True,  # Google users are pre-verified
-                google_id=google_id
-            )
+            # Create/update user profile
+            profile, _ = UserProfile.objects.get_or_create(user=user)
+            profile.email_verified = True
+            profile.google_id = google_id
+            profile.save()
             
             # Log in the new user
             login(request, user)

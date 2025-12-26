@@ -5,8 +5,6 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # Auth URLs must come before include to prevent catch-all interference
-    path('auth/google/', include('rooms.urls')),
     path('', include('rooms.urls')),
 ]
 
